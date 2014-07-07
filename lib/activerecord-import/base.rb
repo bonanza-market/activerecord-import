@@ -14,7 +14,7 @@ module ActiveRecord::Import
     else adapter
     end
   end
-  
+
   # Loads the import functionality for a specific database adapter
   def self.require_adapter(adapter)
     require File.join(AdapterPath,"/abstract_adapter")
@@ -23,7 +23,7 @@ module ActiveRecord::Import
 
   # Loads the import functionality for the passed in ActiveRecord connection
   def self.load_from_connection_pool(connection_pool)
-    require_adapter connection_pool.spec.config[:adapter]
+    require_adapter connection_pool.spec.try(:config).try(:[], :pool_adapter) || connection_pool.spec.config[:adapter]
   end
 end
 
